@@ -225,6 +225,7 @@ COBJS-y += dlmalloc.o
 COBJS-y += image.o
 COBJS-y += memsize.o
 COBJS-y += stdio.o
+COBJS-y += cmd_hello.o
 
 
 COBJS	:= $(sort $(COBJS-y))

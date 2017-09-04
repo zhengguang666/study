@@ -102,6 +102,11 @@ _main:
 #if defined(CONFIG_NAND_SPL)
 	/* deprecated, use instead CONFIG_SPL_BUILD */
 	ldr	sp, =(CONFIG_SYS_INIT_SP_ADDR)
+bss_clean:cmp	r0, r1
+	strlo	r2, [r0]
+	addlo	r0, r0, #4
+	blo	bss_clean
+	ldr	pc, =nand_boot
 #elif defined(CONFIG_SPL_BUILD) && defined(CONFIG_SPL_STACK)
 	ldr	sp, =(CONFIG_SPL_STACK)
 #else
@@ -150,8 +155,10 @@ clbss_l:cmp	r0, r1			/* while not at end of BSS */
 	addlo	r0, r0, #4		/* move to next */
 	blo	clbss_l
 
+#ifndef CONFIG_NAND_SPL
 	bl coloured_LED_init
 	bl red_led_on
+#endif
 
 #if defined(CONFIG_NAND_SPL)
 

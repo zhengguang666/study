@@ -2622,6 +2622,7 @@ static const struct nand_flash_dev *nand_get_flash_type(struct mtd_info *mtd,
 	/* Read manufacturer and device IDs */
 	*maf_id = chip->read_byte(mtd);
 	*dev_id = chip->read_byte(mtd);
+	printk("01Manufacturer:0x%02x Chip ID: 0x%02x\n",*maf_id, *dev_id);	
 
 	/* Try again to make sure, as some systems the bus-hold or other
 	 * interface concerns can cause random data which looks like a

@@ -29,6 +29,8 @@
 #include <mmc.h>
 #include <sdhci.h>
 
+#define SDHCI_DEFAULT_BOUNDARY_SIZE (512 * 1024)
+
 void *aligned_buffer;
 
 static void sdhci_reset(struct sdhci_host *host, u8 mask)
@@ -164,7 +166,7 @@ int sdhci_send_command(struct mmc *mmc, struct mmc_cmd *cmd,
 		flags = SDHCI_CMD_RESP_LONG;
 	else if (cmd->resp_type & MMC_RSP_BUSY) {
 		flags = SDHCI_CMD_RESP_SHORT_BUSY;
-		mask |= SDHCI_INT_DATA_END;
+		//mask |= SDHCI_INT_DATA_END;
 	} else
 		flags = SDHCI_CMD_RESP_SHORT;
 
@@ -488,6 +490,7 @@ int add_sdhci(struct sdhci_host *host, u32 max_clk, u32 min_clk)
 	if (host->host_caps)
 		mmc->host_caps |= host->host_caps;
 
+	mmc->b_max = 1024;
 	sdhci_reset(host, SDHCI_RESET_ALL);
 	mmc_register(mmc);
 
